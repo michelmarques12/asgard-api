@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='asgard-api-plugin-metrics-example-1',
-    version='0.1.0',
+    version='0.2.0',
 
     description='a plugin to the Asgard API',
     long_description="Plugin",
