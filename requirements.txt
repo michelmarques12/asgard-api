@@ -11,4 +11,4 @@ sqlalchemy==1.1.13
 newrelic==2.100.0.84
 
 # Asgard API Plugins
-asgard-api-plugin-metrics-mesos==0.3.0
+asgard-api-plugin-metrics-mesos==0.4.0-rc1
