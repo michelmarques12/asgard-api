@@ -3,6 +3,7 @@ from unittest import mock
 
 from hollowman import plugins
 from hollowman.app import application
+from hollowman.plugins import ASGARD_PLUGIN_LOGGER_REGISTRY
 
 import unittest
 
@@ -29,4 +30,5 @@ class PluginLoaderTest(unittest.TestCase):
             self.assertEqual(200, response.status_code)
             self.assertEqual(b"Metrics Plugin Example 1 OK", response.data)
             logger_mock.info.assert_called_with("Log from Mertrics Plugin")
+            self.assertTrue(logger_mock is ASGARD_PLUGIN_LOGGER_REGISTRY["asgard-api-plugin-metrics-example-1"])
 

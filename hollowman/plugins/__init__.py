@@ -13,6 +13,15 @@ from hollowman.log import logger
 class API_PLUGIN_TYPES(Enum):
     API_METRIC_PLUGIN = "asgard_api_metrics_mountpoint"
 
+
+"""
+Registry que guarda uma referência para cada logger passado para cada pluginque foi
+carregado. Dessa forma poderemos mudar o lolevel deles quando necessário.
+"""
+ASGARD_PLUGIN_LOGGER_REGISTRY = {
+
+}
+
 # Registry é um dict onde a key é o ID do plugin e o value
 # são meta-dados sobre o plugin, ex:
 #    * ID do plugin
@@ -59,9 +68,11 @@ def load_all_metrics_plugins(flask_application, get_plugin_logger_instance=get_p
         try:
             package_name = entrypoint.dist.project_name
             entrypoint_function = entrypoint.load()
-            plugin_data = entrypoint_function(logger=get_plugin_logger_instance(plugin_id=package_name))
+            plugin_logger_instance = get_plugin_logger_instance(plugin_id=package_name)
+            plugin_data = entrypoint_function(logger=plugin_logger_instance)
             url_prefix = f"/_cat/metrics/{package_name}"
             flask_application.register_blueprint(plugin_data['blueprint'], url_prefix=url_prefix)
+            ASGARD_PLUGIN_LOGGER_REGISTRY[package_name] = plugin_logger_instance
             logger.info({
                 "msg": "Metrics plugin loaded",
                 "plugin_entrypoint": entrypoint,
