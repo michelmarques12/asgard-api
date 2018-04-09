@@ -15,6 +15,7 @@ from hollowman.models import HollowmanSession, User, Account
 from hollowman import dispatcher
 from hollowman.hollowman_flask import FilterType, OperationType
 from hollowman import log
+from hollowman.plugins import ASGARD_PLUGIN_LOGGER_REGISTRY
 
 from tests import rebuild_schema
 from tests.utils import with_json_fixture
@@ -83,6 +84,10 @@ class TestApp(TestCase):
             self.assertEqual(redirect_value, response.headers['Location'])
 
     def test_log_level_is_changed_at_runtime(self):
+        """
+        Certificamos que todos os loggers sofrem essa mesma modificação,
+        incluindo loggers de plugins que foram carregados
+        """
         current_log_level = logging.getLevelName(log.logger.getEffectiveLevel())
         self.assertEqual(current_log_level, "INFO")
         with application.test_client() as client:
@@ -92,6 +97,15 @@ class TestApp(TestCase):
             self.assertEqual(new_loglevel, "ERROR")
             response_data = json.loads(response.data)
             self.assertEqual(response_data['loglevel'], "ERROR")
+
+    def test_log_level_of_plugins_is_changed_at_runtime(self):
+        plugin_logger = ASGARD_PLUGIN_LOGGER_REGISTRY["asgard-api-plugin-metrics-example-1"]
+        plugin_logger.setLevel(logging.INFO)
+        with application.test_client() as client:
+            response = client.post("/settings", data=json.dumps({"loglevel": "ERROR"}))
+            self.assertEqual(response.status_code, 200)
+            new_loglevel = logging.getLevelName(plugin_logger.getEffectiveLevel())
+            self.assertEqual(new_loglevel, "ERROR")
 
     @skip('Need to find a way to test this. Any ideas ?')
     def test_apiv2_path(self):

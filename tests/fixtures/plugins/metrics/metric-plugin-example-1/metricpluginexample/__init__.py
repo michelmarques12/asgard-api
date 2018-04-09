@@ -25,5 +25,6 @@ def plugin_init_exception(**kwargs):
 @my_metrics_blue_print.route("/ping")
 def some_endpoint():
     logger.info("Log from Mertrics Plugin")
+    logger.debug("DEBUG Log from Mertrics Plugin")
     return "Metrics Plugin Example 1 OK"
 
