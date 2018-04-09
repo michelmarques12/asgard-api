@@ -3,10 +3,13 @@
 from enum import Enum
 import traceback
 import sys
+import logging
 
 import pkg_resources
+from simple_json_logger import JsonLogger
 
 from hollowman.log import logger
+from hollowman import conf
 
 class API_PLUGIN_TYPES(Enum):
     API_METRIC_PLUGIN = "asgard_api_metrics_mountpoint"
@@ -45,13 +48,20 @@ def get_plugin_registry_data():
 def load_entrypoint_group(groupname):
     return list(pkg_resources.iter_entry_points(group=groupname))
 
-def load_all_metrics_plugins(flask_application):
+def get_plugin_logger_instance(plugin_id):
+    json_logger = JsonLogger(flatten=True, extra={"plugin-id": plugin_id})
+    return json_logger
+
+
+def load_all_metrics_plugins(flask_application, get_plugin_logger_instance=get_plugin_logger_instance):
     all_metric_plugins = load_entrypoint_group(API_PLUGIN_TYPES.API_METRIC_PLUGIN.value)
     for entrypoint in all_metric_plugins:
         try:
             package_name = entrypoint.dist.project_name
             entrypoint_function = entrypoint.load()
-            plugin_data = entrypoint_function()
+            plugin_logger_instance = get_plugin_logger_instance(plugin_id=package_name)
+            plugin_logger_instance.setLevel(getattr(logging, conf.LOGLEVEL, logging.INFO))
+            plugin_data = entrypoint_function(logger=plugin_logger_instance)
             url_prefix = f"/_cat/metrics/{package_name}"
             flask_application.register_blueprint(plugin_data['blueprint'], url_prefix=url_prefix)
             logger.info({

@@ -1,5 +1,9 @@
 
-from hollowman.plugins import load_entrypoint_group, load_all_metrics_plugins
+import os
+import logging
+from unittest import mock
+
+from hollowman import plugins, conf
 from hollowman.app import application
 
 import unittest
@@ -20,9 +24,13 @@ class PluginLoaderTest(unittest.TestCase):
         O que esse teste confere é que quando carregamos esse plugin, apenas um novo endpoint é adicionado à
         app flask principal
         """
-        load_all_metrics_plugins(application)
+        logger_mock = mock.MagicMock()
+        with mock.patch.multiple(conf, LOGLEVEL="DEBUG"):
+            plugins.load_all_metrics_plugins(application, get_plugin_logger_instance=lambda plugin_id: logger_mock)
         with application.test_client() as client:
             response = client.get("/_cat/metrics/asgard-api-plugin-metrics-example-1/ping")
             self.assertEqual(200, response.status_code)
             self.assertEqual(b"Metrics Plugin Example 1 OK", response.data)
+            logger_mock.info.assert_called_with("Log from Mertrics Plugin")
+            logger_mock.setLevel.assert_called_with(logging.DEBUG)
 

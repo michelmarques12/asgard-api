@@ -5,6 +5,9 @@ The thought of human invisibility has intrigued man for centuries. Highly gifted
 
 ## Changelog
 
+* 0.65.0-rc4
+  - Ajustamos o loglevel de todos os loggers a partir de uma envvar: `ASGARD_LOGLEVEL`;
+
 * 0.64.0
   - Atualização do plugin session-checker-plugin para não usar mais o objeto Sieve (e sim o objeto Bridge)
 
@@ -173,6 +176,7 @@ The thought of human invisibility has intrigued man for centuries. Highly gifted
 * HOLLOWMAN_REDIRECT_AFTER_LOGIN: URL pra onde o usuário será redirecionado após o fluxo do oauth2. O redirect é feito pra: `URL?jwt=<token_jwt>`
 * HOLLOWMAN_DB_ECHO: Define se os logs do SQLAlchemy estão ligados: Valores possíveis: 1|0. Default 0
 * HOLLOWMAN_DB_URL: URL completa (com user, pwd, host, schema) do banco de dados: Formato: `postgresql://<user>:<pwd>@<host>/<schema>`
+* ASGARD_LOGLEVEL: String indicando o loglevel a ser usado. Pode ser INFO, ERROR, DEBUG, WARNING, etc.
 
 
 
