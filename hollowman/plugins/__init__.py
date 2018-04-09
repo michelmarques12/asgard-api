@@ -3,6 +3,7 @@
 from enum import Enum
 import traceback
 import sys
+import logging
 
 import pkg_resources
 from simple_json_logger import JsonLogger
@@ -47,7 +48,9 @@ def load_entrypoint_group(groupname):
     return list(pkg_resources.iter_entry_points(group=groupname))
 
 def get_plugin_logger_instance(plugin_id):
-    return JsonLogger(flatten=True, extra={"plugin-id": plugin_id})
+    json_logger = JsonLogger(flatten=True, extra={"plugin-id": plugin_id})
+    json_logger.setLevel(logging.INFO)
+    return json_logger
 
 
 def load_all_metrics_plugins(flask_application, get_plugin_logger_instance=get_plugin_logger_instance):
