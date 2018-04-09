@@ -95,6 +95,7 @@ def healhcheck():
 
 @application.route("/login/google")
 def google_login():
+    logger.debug("Starting Google Login")
     callback = url_for("authorized", _external=True)
     return google_oauth2.authorize(callback=callback)
 
