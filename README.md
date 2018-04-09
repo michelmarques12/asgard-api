@@ -5,6 +5,9 @@ The thought of human invisibility has intrigued man for centuries. Highly gifted
 
 ## Changelog
 
+* 0.65.0-rc2
+  - feature/IN-2446-adicionar-logger-in-interface-de-plugins-da-api
+
 * 0.63.1
   - Correção para apps que tinham o nome contento a string `*versions/`. 
 
