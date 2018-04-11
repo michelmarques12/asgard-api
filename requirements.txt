@@ -13,4 +13,4 @@ newrelic==2.100.0.84
 #Asgard API SDK
 asgard-api-sdk==0.1.0
 # Asgard API Plugins
-asgard-api-plugin-metrics-mesos==0.5.0-rc2
+asgard-api-plugin-metrics-mesos==0.5.0-rc3
