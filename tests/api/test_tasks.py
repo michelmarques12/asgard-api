@@ -1,8 +1,10 @@
 
 import unittest
+from unittest import mock
 import json
 
 from responses import RequestsMock
+from asgard.sdk import mesos
 
 from hollowman.conf import DEFAULT_MESOS_ADDRESS
 from hollowman.app import application
@@ -10,6 +12,14 @@ from tests.base import BaseApiTests
 from tests.utils import with_json_fixture, get_raw_fixture
 
 class TasksEndpointTest(BaseApiTests, unittest.TestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.get_mesos_leader_address_patcher = mock.patch.object(mesos, "get_mesos_leader_address", return_value=DEFAULT_MESOS_ADDRESS)
+        self.get_mesos_leader_address_patcher.start()
+
+    def tearDown(self):
+        self.get_mesos_leader_address_patcher.stop()
 
     @unittest.skip("")
     def test_tasks_return_404_for_not_found_task(self):

@@ -6,14 +6,16 @@ from http import HTTPStatus
 from flask import Blueprint, Response, request
 from hollowman.decorators import auth_required
 from hollowman.conf import MESOS_ADDRESSES
+from asgard.sdk import mesos
 
 tasks_blueprint = Blueprint(__name__, __name__)
 
 
 def get_task_data(task_id):
+    mesos_leader_url = mesos.get_mesos_leader_address()
 
     task_id_with_namespace = task_id
-    task_info = requests.get(f"{MESOS_ADDRESSES[0]}/tasks?task_id={task_id_with_namespace}").json()['tasks']
+    task_info = requests.get(f"{mesos_leader_url}/tasks?task_id={task_id_with_namespace}").json()['tasks']
 
     if not task_info:
         return None, None
@@ -22,7 +24,7 @@ def get_task_data(task_id):
     framework_id = task_info['framework_id']
     slave_id = task_info['slave_id']
 
-    slave_info = requests.get(f"{MESOS_ADDRESSES[0]}/slaves?slave_id={slave_id}").json()['slaves'][0]
+    slave_info = requests.get(f"{mesos_leader_url}/slaves?slave_id={slave_id}").json()['slaves'][0]
     slave_ip = slave_info['hostname']
 
     slave_state = requests.get(f"http://{slave_ip}:5051/state").json()
