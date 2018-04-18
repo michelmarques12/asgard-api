@@ -2,7 +2,7 @@ import os
 import base64
 
 from marathon import MarathonClient
-from hollowman.options import get_option
+from asgard.sdk.options import get_option
 
 ENABLED = "1"
 DISABLED = "0"

@@ -8,7 +8,7 @@ from flask import Blueprint, make_response
 from .telnet import send_command
 from .parser import parse_stat_output
 
-from hollowman.options import get_option
+from asgard.sdk.options import get_option
 
 zk_metrics_blueprint = Blueprint(__name__, __name__)
 
