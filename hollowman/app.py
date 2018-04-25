@@ -21,7 +21,7 @@ from hollowman.metrics.zk.routes import zk_metrics_blueprint
 from hollowman.api.account import account_blueprint
 from hollowman.api.tasks import tasks_blueprint
 from hollowman.plugins import load_all_metrics_plugins
-
+from hollowman import cache
 
 if NEW_RELIC_LICENSE_KEY and NEW_RELIC_APP_NAME:
     newrelic.agent.initialize()
@@ -42,7 +42,7 @@ application.register_blueprint(tasks_blueprint, url_prefix="/tasks")
 
 CORS(application, origins=CORS_WHITELIST)
 jwt_auth.init_app(application)
-
+cache.init_app(application)
 
 def _get_current_exception_if_exists(current_request):
     try:

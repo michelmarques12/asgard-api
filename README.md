@@ -5,6 +5,9 @@ The thought of human invisibility has intrigued man for centuries. Highly gifted
 
 ## Changelog
 
+* -next
+  - Criação de um cache client. Cache client não dá raise caso o redis esteja fora do ar. 
+
 * 0.67.0
   - Uso do `get_option` da asgard-api-sdk;
   - Melhoria no ambiente de dev. Agora temos toda a infra completa, com PgSQL com múltiplas contas.
