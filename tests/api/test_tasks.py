@@ -182,8 +182,9 @@ class TasksEndpointTest(BaseApiTests, unittest.TestCase):
                 with unittest.mock.patch.object(cache, "set") as cache_set_mock, \
                         unittest.mock.patch.object(api.tasks, 'uuid4', return_value=unittest.mock.Mock(hex=download_id)) as uuid4_mock:
                     resp = client.get(f"/tasks/{task_id}/files/download?path=/stdout&offset=0&length=42", headers=self.auth_header)
-                    self.assertEquals(302, resp.status_code)
-                    self.assertEqual("http://localhost/tasks/downloads/7094c8e5b131416a87ccdc3e7d3131a6", resp.headers["Location"])
+                    self.assertEquals(HTTPStatus.OK, resp.status_code)
+                    resp_data = json.loads(resp.data)
+                    self.assertEqual("tasks/downloads/7094c8e5b131416a87ccdc3e7d3131a6", resp_data["download_url"])
                     cache_set_mock.assert_called_with(f"downloads/{download_id}", {
                         'file_url': f"http://{slave_ip}:5051/files/download?path={sandbox_directory}/stdout",
                         'task_id': task_id,

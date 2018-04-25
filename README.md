@@ -7,6 +7,7 @@ The thought of human invisibility has intrigued man for centuries. Highly gifted
 
 * -next
   - Criação de um cache client. Cache client não dá raise caso o redis esteja fora do ar. 
+  - Criação dos endpoints para download de arquivos de uma task
 
 * 0.67.0
   - Uso do `get_option` da asgard-api-sdk;
@@ -178,6 +179,9 @@ The thought of human invisibility has intrigued man for centuries. Highly gifted
   - Adicionado todo o fluxo para autenticação oauth2, mas ainda não é obrigatório.
 
 ## Env vars
+* ASGARD_CACHE_URL [required]: Enredeço do cache (Redis). No formato: `redis://<host>:<port>/<db>`
+* ASGARD_CACHE_KEY_PREFIX: default `asgard-api/` Prefixo que será usado em todas as operações com o cache
+* ASGARD_CACHE_DEFAULT_TIMEOUT default 60s; Tempo de expiração padrão das chaves de cache
 * MARATHON_CREDENTIALS [required] user:pass for the basic auth
 * HOLLOWMAN_MARATHON_ADDRESS_INDEX [required] Where to connect to find Marathon api. List of Marathon IPs. <INDEX> starts at 0.
 * HOLLOWMAN_MESOS_ADDRESS_INDEX [required] Where to connect to find Mesos API. List of Mesos IPs. <INDEX> starts at 0.
