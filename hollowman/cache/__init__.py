@@ -10,6 +10,9 @@ __cache_backend = Flask_Cache(config={
     'CACHE_TYPE': 'redis',
     'CACHE_KEY_PREFIX': conf.ASGARD_CACHE_KEY_PREFIX,
     'CACHE_DEFAULT_TIMEOUT': conf.ASGARD_CACHE_DEFAULT_TIMEOUT,
+    'CACHE_OPTIONS': {
+        'socket_connect_timeout': 5
+    }
 })
 
 def get(key):

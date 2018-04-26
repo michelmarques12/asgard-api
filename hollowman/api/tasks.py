@@ -102,12 +102,12 @@ def download_by_id(download_id):
     task_id = file_data['task_id']
     file_path = file_data['file_path']
 
-    files_info = requests.get(file_url, stream=True)
+    response = requests.get(file_url, stream=True)
 
-    if files_info.status_code == HTTPStatus.NOT_FOUND:
+    if response.status_code == HTTPStatus.NOT_FOUND:
         return Response(response=json.dumps({}), status=HTTPStatus.NOT_FOUND)
 
     filename = f"{task_id}_{file_path.strip('/')}.log"
 
-    return Response(response=files_info.iter_content(chunk_size=4096), status=200, headers={"Content-Disposition":  f"attachment; filename={filename}",
+    return Response(response=response.iter_content(chunk_size=4096), status=200, headers={"Content-Disposition":  f"attachment; filename={filename}",
                                                                                             "Content-Type": "application/octet-stream"})
