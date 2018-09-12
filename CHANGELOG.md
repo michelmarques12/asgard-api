@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.75.0
+ * Atualização do flask para `0.12.4`, https://nvd.nist.gov/vuln/detail/CVE-2018-1000656
+
 ### 0.74.0
  * Adição do endpoint `/plugins` que mostra o status final de load dos plugins da API
  * Mudança na chave onde a exception de um request é logada
